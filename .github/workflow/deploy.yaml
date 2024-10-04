@@ -35,14 +35,12 @@
 
 
 
-
-
-
 name: CI/CD for dummy react-app
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
