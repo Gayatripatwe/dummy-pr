@@ -1,41 +1,44 @@
-# name : CI/CD for dummy react-app
+
+# name: CI/CD for dummy react-app
 
 # on:
-# push:
-# branches: [main]
-# workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
 
 # permissions:
-# contents: write
+#   contents: write
 
 # jobs:
-# build_and_deploy:
-# runs-on: ubuntu-latest
+#   build_and_deploy:
+#     runs-on: ubuntu-latest
 
-# steps:
-# - name: Checkout repository
-#   uses: actions/checkout@v3
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v3
 
-# - name: Step Node.js
-#   uses: actions/setup-node@v3  
-#   with: 
-#    node-version: 20
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v3  
+#       with: 
+#         node-version: 20
 
-# - name: Install dependencies  
-#   run: npm install
+#     - name: Install dependencies  
+#       run: npm install
+#       working-directory: ./dummy pr
 
-# - name: Build Project
-#   run: npm runn build
+#     - name: Build Project
+#       run: npm run build
+#       working-directory: ./dummy pr
      
-# - name: Deploy to  GitHub Pages
-#   uses: JamesIves/github-pages-deploy-action@4.1.0
-#   with:
-#   branch: gh-pages
-#   folder: build
+#     - name: Deploy to GitHub Pages
+#       uses: JamesIves/github-pages-deploy-action@v4
+#       with:
+#         branch: gh-pages
+#         folder: ./dummy-pr/build
 
 
-
-name: CI/CD for dummy react-app
+name: CI/CD for dummy react-app (Vite)
 
 on:
   push:
@@ -51,24 +54,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout repository
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    # Step 2: Setup Node.js environment
     - name: Setup Node.js
       uses: actions/setup-node@v3  
       with: 
         node-version: 20
 
+    # Step 3: Install dependencies
     - name: Install dependencies  
       run: npm install
-      working-directory: ./dummy pr
+      working-directory: ./dummy-pr  # Use the correct project folder name
 
+    # Step 4: Build the project (using Vite's build command)
     - name: Build Project
-      run: npm run build
-      working-directory: ./dummy pr
-     
+      run: npm run build  # Vite's build command for production
+      working-directory: ./dummy-pr  # Ensure the correct path is used
+
+    # Step 5: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        branch: gh-pages
-        folder: ./dummy-pr/build
+        branch: gh-pages  # Deployment branch
+        folder: ./dummy-pr/dist  # Vite outputs build files in the "dist" folder
