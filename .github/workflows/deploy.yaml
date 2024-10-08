@@ -67,12 +67,12 @@ jobs:
     # Step 3: Install dependencies
     - name: Install dependencies  
       run: npm install
-      working-directory: ./dummy-pr  # Use the correct project folder name
+     # working-directory: ./dummy-pr  # Use the correct project folder name
 
     # Step 4: Build the project (using Vite's build command)
     - name: Build Project
       run: npm run build  # Vite's build command for production
-      working-directory: ./dummy-pr  # Ensure the correct path is used
+     # working-directory: ./dummy-pr  # Ensure the correct path is used
 
     # Step 5: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
