@@ -61,14 +61,14 @@ jobs:
 
     - name: Install dependencies  
       run: npm install
-      working-directory: ./my-react-app 
+      working-directory: ./dummy pr
 
     - name: Build Project
       run: npm run build
-      working-directory: ./my-react-app 
+      working-directory: ./dummy pr
      
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
-        folder: ./my-react-app/build
+        folder: ./dummy-pr/build
