@@ -74,9 +74,9 @@ jobs:
       run: npm run build  # Vite's build command for production
      # working-directory: ./dummy-pr  # Ensure the correct path is used
 
-    # Step 5: Deploy to GitHub Pages
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages  # Deployment branch
-        folder: ./dummy-pr/dist  # Vite outputs build files in the "dist" folder
+    # # Step 5: Deploy to GitHub Pages
+    # - name: Deploy to GitHub Pages
+    #   uses: JamesIves/github-pages-deploy-action@v4
+    #   with:
+    #     branch: gh-pages  # Deployment branch
+    #     folder: ./dummy-pr/dist  # Vite outputs build files in the "dist" folder
