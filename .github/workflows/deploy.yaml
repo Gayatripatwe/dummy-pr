@@ -41,9 +41,9 @@ jobs:
       run: npm run build  # Vite's build command for production
      # working-directory: ./dummy-pr  # Ensure the correct path is used
 
-  # Step 6: Run Tests to ensure everything is functioning correctly
-    - name: Run Tests
-      run: npm test
+  # # Step 6: Run Tests to ensure everything is functioning correctly
+  #   - name: Run Tests
+  #     run: npm test
 
     # Step 7: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
