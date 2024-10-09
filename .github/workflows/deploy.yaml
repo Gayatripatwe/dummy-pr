@@ -40,14 +40,58 @@ jobs:
     - name: Build Project
       run: npm run build  # Vite's build command for production
      # working-directory: ./dummy-pr  # Ensure the correct path is used
-
+ 
   # # Step 6: Run Tests to ensure everything is functioning correctly
   #   - name: Run Tests
   #     run: npm test
 
-    # Step 7: Deploy to GitHub Pages
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
+    # # Step 7: Deploy to GitHub Pages
+    # - name: Deploy to GitHub Pages
+    #   uses: JamesIves/github-pages-deploy-action@v4
+    #   with:
+    #     branch: gh-pages  # Deployment branch
+    #     folder: ./dist  # Vite outputs build files in the "dist" folder
+
+   
+ # Step 7: Deploy to EC2
+    - name: Deploy to EC2
+      uses: appleboy/scp-action@master
       with:
-        branch: gh-pages  # Deployment branch
-        folder: ./dist  # Vite outputs build files in the "dist" folder
+       host: ec2-15-206-174-238.ap-south-1.compute.amazonaws.com
+       username: ubuntu
+       key: -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEA1LzKB24YyBu63HHu8FQulgYjzp7CdpuEoKcQctRY/0RuHKmI
+        N2aXAf/KGAt0WRYMhWQe4jTc7aon8tQEV+WX5OolFI3qLIgPNNvnls7vmVbmXC32
+        3K4vTcGBqLVkDvtaLIWnUraUTRLSHs25LVUfoJfInanJN5+PjCBlCYJ75uGW3mhI
+        jXCzOcx702LWO0iBWZAl9+FIyNfZnpqafQcYaU/3e2FYF0yCb8caj2H1XzNYatEo
+        HkKCo6Ewy365Mo0tlthbYjkrdo5AuoQOsueIiEu7sygl7LfvVBNFE6noTO+4qd59
+        +RNw7qt9YUCLXZEGb1urNtgni/IpS7jjvmAAYwIDAQABAoIBADbnanS0c2zhyz4t
+        oW8hKszJVOB0lNerl3Um6NXZ/AYVkR2Qm3lA3uRDMdM20ZZUXHLovhe/cO1dpuXC
+        1kQhGyyXSW6embtYeiQ4RPLlAW1fwiA0NKwLwGWe9WmnNuWu9TzcWay9NlUV8GjG
+        y23ptDnsMniOY0IZyiBuE+V6aaPSSErgZF+QOspC8SJPygB57yrwV+IlJQFmgGDO
+        WO0D2mabH4z9ixCtF4rStUqXk/eYDlTwsT9k4SR398daIcX6W1OGoHtlEg8MG7MR
+        lU2q8mLuA8Do1IkfcQGlNCT5GsEsHY61iTfnwNkMCN19DXxKjJJ33QFxExY6WIp0
+        de2F1SECgYEA9qnq1Wq5AHIdDaFZChfraM9hD/lPN94B9Odzun35y88chxIpNbka
+        X55+gmFEMf7VtYSUQu+oZqP8cm86BEDEHWvYuoL8FsPcOEZP9nVgcjDNmOs4D0WC
+        SdGm6nTXj14jAiPjoLpu8rLU2IGms9eYlaiyXefN2V5VDp3u9brqkekCgYEA3Moj
+        b5B4ZZUEG2LKYBkDE3DqTFp1BNx+oEifS9SZu/Yrt7otU6U9LnkZ2slU6Hh9wTcy
+        W7Da8Pai5LGK40HRwuswPj/epO+/w8BvqXXrGeKkNMcz18gNv2ehZD5rrEtaw0E/
+        q7rrb7jQKtvwfg2FwwGfSlKM6nJOgncaxvbmZGsCgYBrhL+HTaDcr+E4KsecHbcQ
+        lazSgLLmQFCMB0Or2/PBwkLGIcVy1H/JhFXS0UEfpdxT5jmWP88hBoQpAZDBf9W8
+        mWD8U9I8vh1FLmj2nk1vGRTVflqOVZcoREnE0y+PH9KUwT4ctodcJVWgFkurAuRR
+        ABrX0g4pnPPojjE2Tcan2QKBgQCmfheyrXLcxz5NmHWbecEEDAXihePwQoWKQLk+
+        6Zb0UnItHcvIY7Z7MP76KRBKLXJHHWRwGDFBu/qiEe/151BSeB/tESTHo7Mr3hVV
+        6IHdBzdkRUMm2MjlKTRe72MqjbhnvPBSg6W+ndL8PtZfd7sCjlqcJRv2PzRM1Zvv
+        pYee+QKBgQCa1w+5KEJ7fKAIKX/iEZL6ee3DwFFtiLUiDuUyk9t72XzA/Yd88IvQ
+        iAMJG+FTAjbLXcRI6VvKtfBk9o2QCRw1lIQU/tZUzJ9yBIOwSNkkIqRhiho9ROkr
+        aoEOKIzrQU++OUiO7afSSyCcBYdXAWkwlrraa9MWfDnINyv7VGW8Xg==
+        -----END RSA PRIVATE KEY-----
+       port: 22
+       source: "dist/*"
+       target: "/home/ubuntu/my-app"
+
+          
+
+      # Optional: Restart the application on EC2 (if necessary)
+    - name: Restart Application
+      run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pm2 restart your-app"  # Replace 'your-app' with the name of your application
