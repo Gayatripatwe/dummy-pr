@@ -53,20 +53,48 @@ jobs:
     #     folder: ./dist  # Vite outputs build files in the "dist" folder
 
    
- # Step 7: Deploy to EC2
-    - name: Deploy to EC2
-      uses: appleboy/scp-action@master
-      with:
-       debug: true
-       host: ${{ secrets.EC2_HOST }} 
-       username:  ${{ secrets.EC2_USER }} 
-       key: ${{ secrets.EC2_SSH_KEY }}
-       port: 22
-       source: "dist/*"
-       target: ${{ secrets.EC2_TARGET }} 
+#  # Step 7: Deploy to EC2
+#     - name: Deploy to EC2
+#       uses: appleboy/scp-action@master
+#       with:
+#        debug: true
+#        host: ${{ secrets.EC2_HOST }} 
+#        username:  ${{ secrets.EC2_USER }} 
+#        key: ${{ secrets.EC2_SSH_KEY }}
+#        port: 22
+#        source: "dist/*"
+#        target: ${{ secrets.EC2_TARGET }} 
+
+#     - name: Save SSH key to file
+#       run: echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+#       shell: bash
 
           
 
-      # Optional: Restart the application on EC2 (if necessary)
+#       # Optional: Restart the application on EC2 (if necessary)
+#     - name: Restart Application
+#       run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pm2 restart your-app"  # Replace 'your-app' with the name of your application
+
+
+ # Step 6: Deploy to EC2
+    - name: Setup SSH
+      run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa             # Correct permissions for SSH key
+
+    - name: Deploy to EC2
+      uses: appleboy/scp-action@master
+      with:
+      debug: true
+      host: ${{ secrets.EC2_HOST }} 
+      username: ${{ secrets.EC2_USER }} 
+      key: ${{ secrets.EC2_SSH_KEY }}
+      port: 22
+      source: "dist/*"
+      target: ${{ secrets.EC2_TARGET }}
+
+# Step 7: SSH to EC2 and restart the app
     - name: Restart Application
-      run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pm2 restart your-app"  # Replace 'your-app' with the name of your application
+      run: |
+           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "pm2 restart your-app"
