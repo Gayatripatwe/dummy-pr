@@ -53,24 +53,24 @@ jobs:
     #     folder: ./dist  # Vite outputs build files in the "dist" folder
 
    
-#  # Step 7: Deploy to EC2
-#     - name: Deploy to EC2
-#       uses: appleboy/scp-action@master
-#       with:
-#        debug: true
-#        host: ${{ secrets.EC2_HOST }} 
-#        username:  ${{ secrets.EC2_USER }} 
-#        key: ${{ secrets.EC2_SSH_KEY }}
-#        port: 22
-#        source: "dist/*"
-#        target: ${{ secrets.EC2_TARGET }} 
+ # Step 7: Deploy to EC2
+    - name: Deploy to EC2
+      uses: appleboy/scp-action@master
+      with:
+       debug: true
+       host: ${{ secrets.EC2_HOST }} 
+       username:  ${{ secrets.EC2_USER }} 
+       key: ${{ secrets.EC2_SSH_KEY }}
+       port: 22
+       source: "dist/*"
+       target: ${{ secrets.EC2_TARGET }} 
 
-#     - name: Save SSH key to file
-#       run: echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-#       shell: bash
+    - name: Save SSH key to file
+      run: echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+      shell: bash
 
           
 
-#       # Optional: Restart the application on EC2 (if necessary)
-#     - name: Restart Application
-#       run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pm2 restart your-app"  # Replace 'your-app' with the name of your application
+      # Optional: Restart the application on EC2 (if necessary)
+    - name: Restart Application
+      run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pm2 restart your-app"  # Replace 'your-app' with the name of your application
